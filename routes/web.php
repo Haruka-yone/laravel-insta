@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UsersController;
 Auth::routes();
 // haru
 Route::group(['middleware' => 'auth'], function(){
+    //YUUMI
     Route::get('/', [HomeController::class, 'index'])->name('index');//SHEM
     Route::get('/people', [HomeController::class, 'search'])->name('search');
 
