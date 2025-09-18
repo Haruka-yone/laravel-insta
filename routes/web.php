@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UsersController;
 
 Auth::routes();
-
+// haru
 Route::group(['middleware' => 'auth'], function(){
     //YUUMI
     Route::get('/', [HomeController::class, 'index'])->name('index');
