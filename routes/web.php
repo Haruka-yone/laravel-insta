@@ -14,9 +14,9 @@ use App\Http\Controllers\Admin\UsersController;
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){ 
     Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::get('/people', [HomeController::class, 'search'])->name('search');
+    Route::get('/people', [HomeController::class, 'search'])->name('search'); // hiro
 
     Route::group(['prefix' => 'admin','as' => 'admin.', 'middleware' => 'admin'], function(){
         // USER
