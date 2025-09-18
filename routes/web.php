@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UsersController;
 
 Auth::routes();//kamo
-
-Route::group(['middleware' => 'auth'], function(){
-    Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::get('/people', [HomeController::class, 'search'])->name('search');
+// haru
+Route::group(['middleware' => 'auth'], function(){ 
+    //YUUMI
+    Route::get('/', [HomeController::class, 'index'])->name('index');//SHEM
+    Route::get('/people', [HomeController::class, 'search'])->name('search'); // hiro
 
     Route::group(['prefix' => 'admin','as' => 'admin.', 'middleware' => 'admin'], function(){
         // USER
