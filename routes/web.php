@@ -9,11 +9,18 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;//Hi!
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\RegisterController;
+
 // admin Controllers
 use App\Http\Controllers\Admin\UsersController;
 
 Auth::routes();//kamo
 // haru
+Route::get('/login', function () {return view('auth.auth');})->name('login');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+Route::get('/register', function () {return redirect('/login');});
+
 Route::group(['middleware' => 'auth'], function(){ 
     //YUUMI
     Route::get('/', [HomeController::class, 'index'])->name('index');//SHEM
