@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UsersController;
 
 Auth::routes();
-
-Route::group(['middleware' => 'auth'], function(){//SHEM
+// haru
+Route::group(['middleware' => 'auth'], function(){
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/people', [HomeController::class, 'search'])->name('search');
 
