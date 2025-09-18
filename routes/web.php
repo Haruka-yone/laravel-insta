@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function(){
     // COMMENTS
     Route::post('/comment/{post_id}/store', [CommentController::class, 'store'])->name('comment.store');
     Route::delete('/comment/{id}/destroy', [CommentController::class, 'destroy'])->name('comment.destroy');
-
+// I'm japanse
     // PROFILE
     Route::get('/profile/{id}/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
