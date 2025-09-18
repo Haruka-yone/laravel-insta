@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // admin Controllers
 use App\Http\Controllers\Admin\UsersController;
 
-Auth::routes();
+Auth::routes();//kamo
 // haru
 Route::group(['middleware' => 'auth'], function(){ 
     //YUUMI
