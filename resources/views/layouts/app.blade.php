@@ -68,6 +68,13 @@
                                     </li>
                                 @endif
                             @else
+                                {{-- Category Search --}}
+                                <li class="nav-item" title="Category Search">
+                                    <a href="{{ route('categories.search') }}" class="nav-link">
+                                        <i class="fa-solid fa-magnifying-glass text-dark icon-sm"></i>
+                                    </a>
+                                </li>
+
                                 {{-- Home --}}
                                 <li class="nav-item" title="Home">
                                     <a href="{{ route('index') }}" class="nav-link">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
@@ -72,4 +73,6 @@ class HomeController extends Controller
         $users = $this->user->where('name', 'like', '%'.$request->search.'%')->get();
         return view('users.search')->with('users', $users)->with('search', $request->search);
     }
+
+    
 }
