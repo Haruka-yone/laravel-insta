@@ -3,6 +3,7 @@
 @section('title', 'Admin Categories')
 
 @section('content')
+
     <form action="{{ route('admin.categories.store') }}" method="post" class="d-flex mb-3">
         @csrf
         <input type="text" name="name" class="form-control w-50" placeholder="Add a category">
