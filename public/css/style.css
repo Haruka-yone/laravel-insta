@@ -1,6 +1,55 @@
+.brand-text{
+    font-family:"Poppins",sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    background:linear-gradient(45deg,#B0A695,#EBE3D5);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    letter-spacing:1px;
+}
+/* --- Palette from your image --- */
+:root{
+  --sand-50:#f4f1ee;   /* page bg */
+  --sand-100:#eae3d4;  /* light band */
+  --sand-300:#b7ad9a;  /* mid */
+  --sand-600:#c0b6ad;  /* dark taupe (navbar) */
+  --ink:#4c433d;
+  --ink-soft:#4a443f;
+  --white:#ffffff;
+}
+
+/* --- Navbar look --- */
+.navbar-elegant{
+  --bs-navbar-color: rgba(255,255,255,.85);
+  --bs-navbar-hover-color: #fff;
+  --bs-navbar-brand-color: #fff;
+  --bs-navbar-brand-hover-color: #fff;
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background: linear-gradient(0deg, var(--sand-600), var(--sand-600));
+  border-bottom: 3px solid var(--sand-300);
+}
+.navbar-elegant .nav-link{
+  color: var(--bs-navbar-color);
+  transition: color .15s, transform .15s;
+}
+.navbar-elegant .nav-link:hover,
+.navbar-elegant .nav-link:focus{
+  color: var(--bs-navbar-hover-color);
+  transform: translateY(-1px);
+}
+
+/* Dropdown menu contrast on dark bar */
+.navbar-elegant .dropdown-menu{
+  border: 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+.navbar-elegant .dropdown-item i{ width: 1.1rem; color: var(--ink-soft); }
+
+
 /* SMALL ICONS */
 .icon-sm {
     font-size: 2rem;
+    color:#EBE3D5;
 }
 
 /* for modal images */

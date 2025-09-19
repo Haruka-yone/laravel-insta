@@ -23,13 +23,13 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body style="background-color:#f4f2f0">
     <div id="app">
         @if (!View::hasSection('hideNavbar'))
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-lg navbar-elegant shadow-sm sticky-top">
                 <div class="container">
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        <h1 class="h5 mb-0">{{ config('app.name') }}</h1>
+                        <h1 class="brand-text">{{ config('app.name') }}</h1>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -71,7 +71,7 @@
                                 {{-- Home --}}
                                 <li class="nav-item" title="Home">
                                     <a href="{{ route('index') }}" class="nav-link">
-                                        <i class="fa-solid fa-house text-dark icon-sm"></i>
+                                        <i class="fa-solid fa-house text-dark icon-sm " style="color:#EBE3D5"></i>
                                     </a>
                                 </li>
 
@@ -84,7 +84,7 @@
 
                                 {{-- Account --}}
                                 <li class="nav-item dropdown">
-                                    <buttun class="btn shadow-none nav-link" id="account-dropdown"
+                                    <button class="btn shadow-none nav-link" id="account-dropdown"
                                         data-bs-toggle="dropdown">
                                         @if (Auth::user()->avatar)
                                             <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"
@@ -92,13 +92,13 @@
                                         @else
                                             <i class="fa-solid fa-circle-user text-dark icon-sm"></i>
                                         @endif
-                                    </buttun>
+                                    </button>
 
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown">
                                         {{-- [SOON] admin Controls --}}
                                         @can('admin')
                                             <a href="{{ route('admin.users') }}" class="dropdown-item">
-                                                <i class="fa-solid fa-user-gear"></i> Admin
+                                                <i class="fa-solid fa-user-gear style='color:#EBE3D5'"></i> Admin
                                             </a>
 
                                             <hr class="dropdown-divider">
