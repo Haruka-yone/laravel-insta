@@ -121,7 +121,7 @@
                                             <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"
                                                 class="rounded-circle avatar-sm">
                                         @else
-                                            <i class="fa-solid fa-circle-user fs-5"></i>
+                                            <i class="fa-solid fa-circle-user icon-sm"></i>
                                         @endif
                                     </button>
 
