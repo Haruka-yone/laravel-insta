@@ -1,5 +1,5 @@
 <?php
-//kamo
+
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\PostsController;
 use App\Http\Controllers\CommentController;
@@ -41,12 +41,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
         Route::post('/categories/store', [CategoriesController::class, 'store'])->name('categories.store');
         Route::patch('/categories/{id}/update', [CategoriesController::class, 'update'])->name('categories.update');
-        Route::delete('/categories/{id}/destroy', [CategoriesController::class, 'destroy'])->name('categories.destroy');//test
+        Route::delete('/categories/{id}/destroy', [CategoriesController::class, 'destroy'])->name('categories.destroy');
        
     });
 
     // POSTS
-    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');//test2
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
     Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
     Route::get('/post/{id}/show', [PostController::class, 'show'])->name('post.show');
     Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function(){
     // COMMENTS
     Route::post('/comment/{post_id}/store', [CommentController::class, 'store'])->name('comment.store');
     Route::delete('/comment/{id}/destroy', [CommentController::class, 'destroy'])->name('comment.destroy');
-// I'm japanse
+
     // PROFILE
     Route::get('/profile/{id}/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -74,4 +74,3 @@ Route::group(['middleware' => 'auth'], function(){
 
 });
 
-// Yeah!!
