@@ -47,7 +47,7 @@
     </a>
     &nbsp;
     <p class="d-inline fw-light">{{ $post->description }}</p>
-    <p class="text-uppercase text-muted xsmall">{{ date('M d,Y',strtotime($post->created_at)) }}</p>
+    <p class="text-uppercase text-muted xsmall">{{ date('M d, Y',strtotime($post->created_at)) }}</p>
 
     {{-- comments --}}
     @include('users.posts.contents.comments')

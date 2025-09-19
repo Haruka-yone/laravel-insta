@@ -26,7 +26,7 @@
             <div class="text-center mt-5">
                 <i class="fa-regular fa-image mb-3" style="font-size: 4rem; color:#B0A695;"></i>
                 <h5 class="fw-semibold" style="color:#776B5D;">No Posts Yet</h5>
-                <p class="text-muted">When {{ $user->name }} shares posts, they’ll appear here.</p>
+                {{-- <p class="text-muted">Add some post!</p> --}}
             </div>
         @endif
     </div>
