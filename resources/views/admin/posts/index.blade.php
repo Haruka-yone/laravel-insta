@@ -3,6 +3,11 @@
 @section('title', 'Admin Posts')
 
 @section('content')
+
+    <form action="" style="width:300px">
+        <input type="search" name="search" class="form-control form-control-sm" placeholder="Search...">
+    </form>
+
     <table class="table table-hover align-middle bg-white border text-secondary">
         <thead class="small table-primary text-secondary">
             <tr>
