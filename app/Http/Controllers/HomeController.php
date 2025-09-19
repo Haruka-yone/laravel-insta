@@ -34,11 +34,13 @@ class HomeController extends Controller
     {
         // $all_posts = $this->post->latest()->get();
         $home_posts = $this->getHomePosts();
-        $suggested_users = $this->getSuggestedUsers();
+        $all_suggested_users = $this->getSuggestedUsers();
+        $suggested_users = array_slice($all_suggested_users, 0, 5);
 
         return view('users.home')
             ->with('home_posts', $home_posts)
-            ->with('suggested_users', $suggested_users);
+            ->with('suggested_users', $suggested_users)
+            ->with('all_suggested_users', $all_suggested_users);
             // ->with('all_posts', $all_posts);
     }
 

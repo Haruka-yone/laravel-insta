@@ -4,70 +4,85 @@
 
 @section('content')
     <div class="row gx-5">
+        {{-- ===== MAIN POSTS FEED ===== --}}
         <div class="col-8">
             @forelse ($home_posts as $post)
-                <div class="card mb-4">
+                <div class="card mb-4 shadow-sm border-0 rounded-3 post-card">
                     {{-- title --}}
                     @include('users.posts.contents.title')
                     {{-- body --}}
                     @include('users.posts.contents.body')
                 </div>
             @empty
-                {{-- If the site doesn't have any post yet. --}}
-                <div class="text-center">
-                    <h2>Share Photos</h2>
+                <div class="text-center py-5 fade-in">
+                    <i class="fa-regular fa-image icon-lg mb-3" style="color:#B0A695;"></i>
+                    <h2 class="fw-bold" style="color:#B0A695;">Share Photos</h2>
                     <p class="text-secondary">When you share photos, they'll appear on your profile.</p>
-                    <a href="{{ route('post.create') }}" class="text-decoration-none">Share your first photo</a>
+                    <a href="{{ route('post.create') }}" class="btn rounded-pill px-4 fancy-btn">
+                        Share your first photo
+                    </a>
                 </div>
             @endforelse
         </div>
-        <div class="col-4">
+
+        {{-- ===== SIDEBAR ===== --}}
+        <div class="col-4 fade-in">
             {{-- Profile Overview --}}
-            <div class="row aline-item-center mb-5 bg-white shadow-sm rounded-3 py-3">
-                <div class="col-auto">
+            <div class="d-flex align-items-center mb-5 shadow-sm rounded-3 py-3 px-3 profile-card">
+                <div class="me-3">
                     <a href="{{ route('profile.show', Auth::user()->id) }}">
                         @if (Auth::user()->avatar)
-                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" class="rounded-circle avatar-md">
+                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"
+                                class="rounded-circle avatar-md hover-zoom">
                         @else
-                            <i class="fa-solid fa-circle-user text-secondary icon-md"></i>
+                            <i class="fa-solid fa-circle-user icon-md" style="color:#B0A695;"></i>
                         @endif
                     </a>
                 </div>
-                <div class="col ps-0">
-                    <a href="{{ route('profile.show', Auth::user()->id) }}" class="text-decoration-none text-dark fw-bold">{{ Auth::user()->name }}</a>
-                    <p class="text-muted mb-0">{{ Auth::user()->email }}</p>
+                <div>
+                    <a href="{{ route('profile.show', Auth::user()->id) }}" class="fw-bold d-block text-decoration-none"
+                        style="color:#333;">
+                        {{ Auth::user()->name }}
+                    </a>
+                    <p class="mb-0 small text-muted">{{ Auth::user()->email }}</p>
                 </div>
             </div>
 
             {{-- Suggestions --}}
             @if ($suggested_users)
-                <div class="row">
-                    <div class="col-auto">
-                        <p class="fw-bold text-secondary">Suggested For You</p>
-                    </div>
-                    <div class="col text-end">
-                        <a href="" class="fw-bold text-dark text-decoration-none">See All</a>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="fw-bold mb-0" style="color:#B0A695;">Suggested For You</p>
+                    <a href="#" class="fw-bold small text-decoration-none" style="color:#333;" data-bs-toggle="modal"
+                        data-bs-target="#suggestionsModal">
+                        See All
+                    </a>
+
                 </div>
 
-                @foreach ( $suggested_users as $user)
-                    <div class="row align-items-center mb-3">
-                        <div class="col-auto">
+                @foreach ($suggested_users as $user)
+                    <div class="d-flex align-items-center mb-2 p-2 rounded-2 suggestion-card">
+                        <div class="me-2">
                             <a href="{{ route('profile.show', $user->id) }}">
                                 @if ($user->avatar)
-                                    <img src="{{ $user->avatar}}" alt="{{ $user->name }}" class="rounded-circle avatar-sm">
+                                    <img src="{{ $user->avatar }}" alt="{{ $user->name }}"
+                                        class="rounded-circle avatar-sm hover-zoom">
                                 @else
-                                    <i class="fa-solid fa-circle-user text-secondary icon-sm"></i>
+                                    <i class="fa-solid fa-circle-user icon-sm" style="color:#B0A695;"></i>
                                 @endif
                             </a>
                         </div>
-                        <div class="col ps-0 truncate">
-                            <a href="{{ route('profile.show', $user->id) }}" class="text-decoration-none text-dark fw-bold">{{ $user->name }}</a>
+                        <div class="flex-grow-1 truncate">
+                            <a href="{{ route('profile.show', $user->id) }}" class="fw-bold text-decoration-none"
+                                style="color:#333;">
+                                {{ $user->name }}
+                            </a>
                         </div>
-                        <div class="col-auto">
-                            <form action="{{ route('follow.store',$user->id) }}" method="post">
+                        <div>
+                            <form action="{{ route('follow.store', $user->id) }}" method="post">
                                 @csrf
-                                <button type="submit" class="border-0 bg-transparent p-0 text-primary btn-sm">Follow</button>
+                                <button type="submit" class="btn btn-sm rounded-pill px-3 py-1 border-0 fancy-btn">
+                                    Follow
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -75,5 +90,49 @@
             @endif
         </div>
     </div>
-    
+
+    <!-- Suggestions Modal -->
+    <div class="modal fade" id="suggestionsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-md">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" style="color:#B0A695;">Suggested Users</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    @foreach ($all_suggested_users as $user)
+                        <div class="d-flex align-items-center mb-3 p-2 rounded-2 suggestion-card">
+                            <div class="me-3">
+                                <a href="{{ route('profile.show', $user->id) }}">
+                                    @if ($user->avatar)
+                                        <img src="{{ $user->avatar }}" alt="{{ $user->name }}"
+                                            class="rounded-circle avatar-sm hover-zoom">
+                                    @else
+                                        <i class="fa-solid fa-circle-user icon-sm" style="color:#B0A695;"></i>
+                                    @endif
+                                </a>
+                            </div>
+                            <div class="flex-grow-1">
+                                <a href="{{ route('profile.show', $user->id) }}" class="fw-bold text-decoration-none"
+                                    style="color:#333;">
+                                    {{ $user->name }}
+                                </a>
+                                <p class="mb-0 small text-muted">{{ $user->email }}</p>
+                            </div>
+                            <div>
+                                <form action="{{ route('follow.store', $user->id) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm rounded-pill px-3 py-1 border-0 fancy-btn">
+                                        Follow
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
