@@ -73,7 +73,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/follow/{user_id}/store', [FollowController::class, 'store'])->name('follow.store');
     Route::delete('/follow/{user_id}/destroy', [FollowController::class, 'destroy'])->name('follow.destroy');
 
+    // Haru
     Route::get('/categories/search', [CategoryController::class, 'categorySearch'])->name('categories.search');
+    Route::post('/categories/explore', [CategoryController::class, 'explore'])->name('categories.explore');
 
 });
 
