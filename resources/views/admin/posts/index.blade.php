@@ -4,8 +4,20 @@
 
 @section('content')
 
-    <form action="" style="width:300px">
-        <input type="search" name="search" class="form-control form-control-sm" placeholder="Search...">
+    <form action="{{ route('admin.posts')}}" style="width:500px" class="mb-5" id="filter-form">
+        {{-- search --}}
+        <input type="search" name="search" value="{{ request('search')}}" class="d-inline form-control form-control-sm mb-3" placeholder="Search Category..." autofocus>
+        
+        {{-- check box --}}
+        <div>
+            <h4 class="h4 fst-italic" style="font-family: Helvetica, Arial, sans-serif; color: #c7a45dd8 ">Select category</h4>
+            @foreach ($all_categories as $category)
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="categories[]" id="{{ $category->name }}" value="{{$category->id }}" class="form-check-input" {{ in_array($category->id, $selectedCategories ?? []) ? 'checked' : '' }} onchange="document.getElementById('filter-form').submit();">
+                    <label for="{{ $category->name }}" class="form-check-label fw-bold">{{ $category->name }}</label>
+                </div>
+            @endforeach
+        </div>
     </form>
 
     <table class="table table-hover align-middle bg-white border text-secondary">
