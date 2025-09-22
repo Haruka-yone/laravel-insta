@@ -1,8 +1,36 @@
 {{-- clickable image --}}
 <div class="container p-0">
-    <a href="{{ route('post.show', $post->id) }}">
+    {{-- <a href="{{ route('post.show', $post->id) }}">
         <img src="{{ $post->image }}" alt="post id {{ $post->id }}" class="w-100">
-    </a>
+    </a> --}}
+    @if ($post->images->count() > 1)
+        {{-- Bootstrap Carousel for multiple images --}}
+        <div id="carousel-{{ $post->id }}" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @foreach ($post->images as $index => $image)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        <a href="{{ route('post.show', $post->id) }}">
+                            <img src="{{ $image->image }}" class="d-block w-100" alt="post image {{ $post->id }}">
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ $post->id }}"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ $post->id }}"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    @elseif($post->images->count() === 1)
+        {{-- Single image --}}
+        <a href="{{ route('post.show', $post->id) }}">
+            <img src="{{ $post->images->first()->image }}" class="w-100" alt="post image {{ $post->id }}">
+        </a>
+    @endif
+
 </div>
 <div class="card-body">
     {{-- heard button + no. of likes + categories --}}
@@ -47,7 +75,7 @@
     </a>
     &nbsp;
     <p class="d-inline fw-light">{{ $post->description }}</p>
-    <p class="text-uppercase text-muted xsmall">{{ date('M d, Y',strtotime($post->created_at)) }}</p>
+    <p class="text-uppercase text-muted xsmall">{{ date('M d, Y', strtotime($post->created_at)) }}</p>
 
     {{-- comments --}}
     @include('users.posts.contents.comments')

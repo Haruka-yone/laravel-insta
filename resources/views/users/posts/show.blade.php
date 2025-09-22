@@ -8,14 +8,42 @@
             overflow-y: scroll;
         }
 
-        .card-body{
+        .card-body {
             position: absolute;
             top: 65px;
         }
     </style>
     <div class="row border shadow">
         <div class="col p-0 border-end">
-            <img src="{{ $post->image }}" alt="{{ $post->id }}" class="w-100">
+            {{-- <img src="{{ $post->image }}" alt="{{ $post->id }}" class="w-100"> --}}
+            <div class="col p-0 border-end">
+                @if ($post->images->count() > 1)
+                    {{-- Bootstrap Carousel --}}
+                    <div id="carouselPost{{ $post->id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @foreach ($post->images as $key => $image)
+                                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                    <img src="{{ $image->image }}" alt="Post image {{ $post->id }}" class="w-100">
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Controls --}}
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselPost{{ $post->id }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselPost{{ $post->id }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+                @else
+                    {{-- Single Image --}}
+                    <img src="{{ $post->images->first()->image }}" alt="Post image {{ $post->id }}" class="w-100">
+                @endif
+            </div>
+
         </div>
         <div class="col-4 px-0 bg-white">
             <div class="card border-0">
@@ -24,18 +52,20 @@
                         <div class="col-auto">
                             <a href="{{ route('profile.show', $post->user->id) }}">
                                 @if ($post->user->avatar)
-                                    <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name }}" class="rounded-circle avatar-sm">
+                                    <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name }}"
+                                        class="rounded-circle avatar-sm">
                                 @else
                                     <i class="fa-solid fa-circle-user text-secondary icon-sm"></i>
                                 @endif
                             </a>
                         </div>
                         <div class="col ps-0">
-                            <a href="{{ route('profile.show', $post->user->id) }}" class="text-decoration-none text-dark">{{ $post->user->name }}</a>
+                            <a href="{{ route('profile.show', $post->user->id) }}"
+                                class="text-decoration-none text-dark">{{ $post->user->name }}</a>
                         </div>
                         <div class="col-auto">
-                             {{-- If you are the OWNER of the post, you can Edit or Delete this post. --}}
-                            @if(Auth::user()->id === $post->user->id)
+                            {{-- If you are the OWNER of the post, you can Edit or Delete this post. --}}
+                            @if (Auth::user()->id === $post->user->id)
                                 <div class="dropdown">
                                     <button class="btn btn-sm shadow-none" data-bs-toggle="dropdown">
                                         <i class="fa-solid fa-ellipsis"></i>
@@ -45,7 +75,8 @@
                                         <a href="{{ route('post.edit', $post->id) }}" class="dropdown-item">
                                             <i class="fa-regular fa-pen-to-square"></i> Edit
                                         </a>
-                                        <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#delete-post-{{ $post->id }}">
+                                        <button class="dropdown-item text-danger" data-bs-toggle="modal"
+                                            data-bs-target="#delete-post-{{ $post->id }}">
                                             <i class="fa-regular fa-trash-can"></i> Delete
                                         </button>
                                     </div>
@@ -53,13 +84,14 @@
                                     @include('users.posts.contents.modals.delete')
                                 </div>
                             @else
-                             {{-- If you are NOT THE OWNER of the post, show a Follow/Unfollow button. To be discussed soon. --}}
-                             {{-- Show Follow button for now. --}}
+                                {{-- If you are NOT THE OWNER of the post, show a Follow/Unfollow button. To be discussed soon. --}}
+                                {{-- Show Follow button for now. --}}
                                 @if ($post->user->isFollowed())
                                     <form action="{{ route('follow.destroy', $post->user->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-secondary btn-sm fw-bold">Following</button>
+                                        <button type="submit"
+                                            class="btn btn-outline-secondary btn-sm fw-bold">Following</button>
                                     </form>
                                 @else
                                     <form action="{{ route('follow.store', $post->user->id) }}" method="post">
@@ -114,16 +146,17 @@
                     </a>
                     &nbsp;
                     <p class="d-inline fw-light">{{ $post->description }}</p>
-                    <p class="text-uppercase text-muted xsmall">{{ date('M d,Y',strtotime($post->created_at)) }}</p>
+                    <p class="text-uppercase text-muted xsmall">{{ date('M d,Y', strtotime($post->created_at)) }}</p>
 
                     {{-- comments --}}
                     <div class="mt-4">
-                        
+
                         <form action="{{ route('comment.store', $post->id) }}" method="post">
                             @csrf
 
                             <div class="input-group">
-                                <textarea name="comment_body{{ $post->id }}" cols="30" rows="1" class="form-control form-control-sm" placeholder="Add a comment...">{{ old('comment_body' . $post->id)}}</textarea>
+                                <textarea name="comment_body{{ $post->id }}" cols="30" rows="1" class="form-control form-control-sm"
+                                    placeholder="Add a comment...">{{ old('comment_body' . $post->id) }}</textarea>
                                 <button type="submit" class="btn btn-outline-secondary btn-sm" title="Post">
                                     <i class="fa-regular fa-paper-plane"></i>
                                 </button>
@@ -139,7 +172,8 @@
                             <ul class="list-group mt-2">
                                 @foreach ($post->comments as $comment)
                                     <li class="list-group-item border-0 p-0 mb-2">
-                                        <a href="{{ route('profile.show', $comment->user->id) }}" class="text-decoration-none text-dark fw-bold">{{ $comment->user->name }}</a>
+                                        <a href="{{ route('profile.show', $comment->user->id) }}"
+                                            class="text-decoration-none text-dark fw-bold">{{ $comment->user->name }}</a>
                                         &nbsp;
                                         <p class="d-inline fw-light">{{ $comment->body }}</p>
 
@@ -147,12 +181,14 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <span class="text-uppercase text-muted xsmall">{{ date('M d, Y', strtotime($comment->created_at)) }}</span>
+                                            <span
+                                                class="text-uppercase text-muted xsmall">{{ date('M d, Y', strtotime($comment->created_at)) }}</span>
 
                                             {{-- If the Auth user is the owner , show delete btn --}}
                                             @if (Auth::user()->id === $comment->user->id)
                                                 &middot;
-                                                <button type="submit" class="border-0 bg-transparent text-danger p-0 xsmall">Delete</button>
+                                                <button type="submit"
+                                                    class="border-0 bg-transparent text-danger p-0 xsmall">Delete</button>
                                             @endif
                                         </form>
                                     </li>

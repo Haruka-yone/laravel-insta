@@ -30,11 +30,11 @@
                             @foreach ($all_categories as $category)
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="category[]" id="cat-{{ $category->id }}"
-                                        value="{{ $category->id }}"
-                                        class="form-check-input accent-color"
+                                        value="{{ $category->id }}" class="form-check-input accent-color"
                                         style="border-color:#776B5D"
                                         {{ in_array($category->id, $selected_categories) ? 'checked' : '' }}>
-                                    <label for="cat-{{ $category->id }}" class="form-check-label">{{ $category->name }}</label>
+                                    <label for="cat-{{ $category->id }}"
+                                        class="form-check-label">{{ $category->name }}</label>
                                 </div>
                             @endforeach
                         </div>
@@ -46,9 +46,8 @@
                     {{-- Description --}}
                     <div class="mb-4">
                         <label for="description" class="form-label fw-bold" style="color:#776B5D;">Description</label>
-                        <textarea name="description" id="description" rows="3" 
-                                  class="form-control shadow-sm border-0"
-                                  placeholder="What's on your mind?">{{ old('description', $post->description) }}</textarea>
+                        <textarea name="description" id="description" rows="3" class="form-control shadow-sm border-0"
+                            placeholder="What's on your mind?">{{ old('description', $post->description) }}</textarea>
                         @error('description')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
@@ -56,21 +55,39 @@
 
                     {{-- Image --}}
                     <div class="mb-4">
-                        <label for="image" class="form-label fw-bold" style="color:#776B5D;">Current Image</label>
-                        <div class="mb-3">
-                            <img src="{{ $post->image }}" alt="Post {{ $post->id }}" 
-                                 class="rounded-3 shadow-sm"
-                                 style="width:200px; height:200px; object-fit:cover; transition:0.3s;">
+                        <label class="form-label fw-bold" style="color:#776B5D;">Current Images</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach ($post->images as $image)
+                                <div class="position-relative" style="width:200px; height:200px;">
+                                    <img src="{{ $image->image }}" alt="Post Image" class="rounded shadow-sm"
+                                        style="width:100%; height:100%; object-fit:cover;">
+
+                                    <form action="{{ route('post-images.destroy', $image->id) }}" method="POST"
+                                        class="position-absolute" style="top: 8px; right: 8px;">
+
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="btn btn-sm btn-danger rounded-circle p-2 d-flex align-items-center justify-content-center"
+                                            style="width:30px; height:30px;" title="Delete Image">
+                                            <i class="fa-solid fa-trash fa-xs"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
                         </div>
-                        <label for="image" class="form-label fw-bold" style="color:#776B5D;">Replace Image</label>
-                        <input type="file" name="image" id="image" 
-                               class="form-control shadow-sm border-0" 
-                               accept="image/*" aria-describedby="image-info">
+
+                        {{-- Upload New Images --}}
+                        <label for="images" class="form-label fw-bold" style="color:#776B5D;">Add New Images</label>
+                        <input type="file" name="images[]" id="images" class="form-control shadow-sm border-0"
+                            accept="image/*" multiple aria-describedby="image-info">
+
                         <div id="image-info" class="form-text text-muted small">
                             Acceptable formats: jpeg, png, gif. <br>
-                            Max file size: 1048kb.
+                            Max file size: 1048kb. <br>
+                            You can select multiple files.
                         </div>
-                        @error('image')
+                        @error('images.*')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
 
@@ -81,7 +98,7 @@
                     {{-- Save Button --}}
                     <div class="text-end">
                         <button type="submit" class="btn px-5 py-2 rounded-pill fancy-btn shadow-sm"
-                                style="background-color:#B0A695; color:white; font-weight:bold; transition:0.3s;">
+                            style="background-color:#B0A695; color:white; font-weight:bold; transition:0.3s;">
                             <i class="fa-regular fa-floppy-disk me-1"></i> Save Changes
                         </button>
                     </div>

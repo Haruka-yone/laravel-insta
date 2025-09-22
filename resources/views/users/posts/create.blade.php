@@ -52,22 +52,28 @@
                         @enderror
                     </div>
 
-                    {{-- Single Image --}}
+                    {{-- Multiple Images --}}
                     <div class="mb-4">
-                        <label for="image" class="form-label fw-bold" style="color:#776B5D;">Upload Image</label>
-                        <input type="file" name="image" id="image" class="form-control shadow-sm border-0"
-                            accept="image/*" aria-describedby="image-info">
-                        <div id="image-info" class="form-text">
-                            Acceptable formats: jpeg, png, gif. <br>
-                            Max file size: 1048kb.
+                        <label class="form-label fw-bold" style="color:#776B5D;">Upload Images</label>
+
+                        <div id="image-wrapper">
+                            <div class="input-group mb-2">
+                                <input type="file" name="images[]" class="form-control shadow-sm border-0"
+                                    accept="image/*">
+                                {{-- <input type="text" name="captions[]" class="form-control shadow-sm border-0"
+                                    placeholder="Enter caption (optional)"> --}}
+                            </div>
                         </div>
-                        @error('image')
+
+                        <button type="button" id="add-more" class="btn btn-sm btn-outline-secondary">+ Add More</button>
+
+                        <div id="preview" class="mt-3 d-flex flex-wrap gap-2"></div>
+
+                        @error('images')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
-
-                        {{-- Image Preview --}}
-                        <div id="preview" class="mt-3"></div>
                     </div>
+
 
                     <div class="text-end">
                         <button type="submit" class="btn px-5 py-2 rounded-pill fancy-btn shadow-sm"
@@ -82,32 +88,49 @@
 @endsection
 
 @push('scripts')
-    <script>
-        // Preview single image
-        document.getElementById('image').addEventListener('change', function(e) {
+<script>
+    // Add more image+caption fields
+    document.getElementById('add-more').addEventListener('click', function() {
+        let wrapper = document.getElementById('image-wrapper');
+        let div = document.createElement('div');
+        div.classList.add('input-group', 'mb-2');
+        div.innerHTML = `
+            <input type="file" name="images[]" class="form-control shadow-sm border-0" accept="image/*">
+        `;
+        wrapper.appendChild(div);
+
+        // Remove input group
+        div.querySelector('.remove-btn').addEventListener('click', function() {
+            div.remove();
+        });
+    });
+
+    // Preview multiple images
+    document.addEventListener('change', function(e) {
+        if (e.target.name === "images[]") {
             let preview = document.getElementById('preview');
             preview.innerHTML = ""; // reset preview
-            let file = e.target.files[0];
-
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(event) {
-                    let img = document.createElement("img");
-                    img.src = event.target.result;
-                    img.classList.add("rounded-3", "shadow-sm", "fade-in");
-                    img.style.width = "200px";
-                    img.style.height = "200px";
-                    img.style.objectFit = "cover";
-                    img.style.transition = "transform 0.3s ease";
-                    img.onmouseover = () => img.style.transform = "scale(1.05)";
-                    img.onmouseout = () => img.style.transform = "scale(1)";
-                    preview.appendChild(img);
+            let files = document.querySelectorAll('input[name="images[]"]');
+            files.forEach(fileInput => {
+                if (fileInput.files[0]) {
+                    let reader = new FileReader();
+                    reader.onload = function(event) {
+                        let img = document.createElement("img");
+                        img.src = event.target.result;
+                        img.classList.add("rounded-3", "shadow-sm");
+                        img.style.width = "120px";
+                        img.style.height = "120px";
+                        img.style.objectFit = "cover";
+                        preview.appendChild(img);
+                    }
+                    reader.readAsDataURL(fileInput.files[0]);
                 }
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
+            });
+        }
+    });
+</script>
 @endpush
+
 
 @push('styles')
     <style>
