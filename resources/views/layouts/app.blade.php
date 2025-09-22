@@ -21,12 +21,15 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    {{-- Livewire --}}
+    @livewireStyles
 </head>
 
 <body style="background-color:#f4f2f0">
     <div id="app">
         @if (!View::hasSection('hideNavbar'))
-            <nav class="navbar navbar-expand-lg shadow-sm"
+            <nav class="navbar navbar-expand-lg shadow-sm fixed-top"
                 style="background: linear-gradient(90deg, #6F6358, #B4AA9A);">
                 <div class="container">
                     <!-- Brand -->
@@ -156,7 +159,7 @@
             </nav>
         @endif
 
-        <main class="py-5">
+        <main class="pt-5 mt-5">
             <div class="container">
                 <div class="row justify-content-center">
                     {{-- [SOON] Admin Controls --}}
@@ -199,9 +202,28 @@
         });
     </script>
 
+    <script>
+        window.addEventListener('open-modal', event => {
+            const modal = document.getElementById(event.detail.id);
+            if (modal) {
+                const modalInstance = new bootstrap.Modal(modal);
+                modalInstance.show();
+            }
+        });
+
+        window.addEventListener('close-modal', event => {
+            const modal = document.getElementById(event.detail.id);
+            if (modal) {
+                const modalInstance = bootstrap.Modal.getInstance(modal);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            }
+        });
+    </script>
 
     @stack('scripts')
-
+    @livewireScripts
 </body>
 
 </html>

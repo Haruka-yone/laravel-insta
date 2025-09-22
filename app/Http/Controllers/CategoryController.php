@@ -23,7 +23,31 @@ class CategoryController extends Controller
     }
 
     public function explore(Request $request){
-        
+
+        $selected = $request->category_id;  
+        $all_posts = $this->post->latest()->get();
+        $all_categories = $this->category->all();
+
+        $posts = [];
+
+        if ($selected === 'all'){
+            $posts = $all_posts;
+        }
+        else{
+            foreach ($all_posts as $post) {
+                foreach ($post->categoryPost as $categoryPost) {
+                    if ($categoryPost->category_id == $selected) {
+                        $posts[] = $post;
+                        break;
+                    }
+                }
+            }
+        }
+
+    return view('users.explore')
+        ->with('posts', $posts)
+        ->with('all_categories', $all_categories)
+        ->with('selected', $selected);
     }
 
 }
