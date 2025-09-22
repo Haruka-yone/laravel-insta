@@ -19,100 +19,109 @@ class PostController extends Controller
         $this->category = $category;
     }
 
-    public function create(){
+    public function create()
+    {
         $all_categories = $this->category->all();
         return view('users.posts.create')->with('all_categories', $all_categories);
     }
 
-    public function store(Request $request){
-        // #1. Validate all from data
+    public function store(Request $request)
+    {
+        // Validate
         $request->validate([
-            'category'    => 'required|array|between:1,3',
+            'category' => 'required|array|between:1,3',
             'description' => 'required|min:1|max:1000',
-            'image'       => 'required|mimes:jpeg,jpg,png,gif|max:1048'
+            'images.*' => 'required|mimes:jpeg,jpg,png,gif|max:2048'
         ]);
 
-        // #2. Save the post
-        $this->post->user_id        = Auth::user()->id;
-        $this->post->image          = 'data:image/' . $request->image->extension() .';base64,' . base64_encode(file_get_contents($request->image));
-        $this->post->description    = $request->description;
-        $this->post->save();
+        // Save post
+        $post = new Post();
+        $post->user_id = Auth::id();
+        $post->description = $request->description;
+        $post->save();
 
-        // #3. Save the categories to the category_post table
-        foreach($request->category as $category_id){
-            $category_post[] =['category_id' => $category_id];
+        // Save categories
+        foreach ($request->category as $category_id) {
+            $category_post[] = ['category_id' => $category_id];
         }
-        $this->post->categoryPost()->createMany($category_post);
+        $post->categoryPost()->createMany($category_post);
 
-        // #4. Go back to homepage
+        // Save multiple images
+        if ($request->has('images')) {
+            foreach ($request->images as $image) {
+                $post->images()->create([
+                    'image' => 'data:image/' . $image->extension() . ';base64,' . base64_encode(file_get_contents($image))
+                ]);
+            }
+        }
+
         return redirect()->route('index');
     }
 
-    public function show($id){
+
+
+    public function show($id)
+    {
         $post = $this->post->findOrFail($id);
 
         return view('users.posts.show')
-                ->with('post', $post);
+            ->with('post', $post);
     }
 
-    public function edit($id){
-        $post = $this->post->findOrFail($id);
+    public function edit($id)
+    {
+        $post = $this->post->with('images')->findOrFail($id);
 
-        // If the Auth user is NOT the owner of the post, redirect to homepage.
-        if(Auth::user()->id != $post->user->id){
+        if (Auth::id() != $post->user_id) {
             return redirect()->route('index');
         }
 
         $all_categories = $this->category->all();
 
-        // Get all the category IDs of the post. Save in an array.
-        $selected_categories = [];
-        foreach($post->categoryPost as $category_post){
-            $selected_categories[] = $category_post->category_id;
-        }
+        $selected_categories = $post->categoryPost->pluck('category_id')->toArray();
 
         return view('users.posts.edit')
-                ->with('post', $post)
-                ->with('all_categories', $all_categories)
-                ->with('selected_categories', $selected_categories);
+            ->with('post', $post)
+            ->with('all_categories', $all_categories)
+            ->with('selected_categories', $selected_categories);
     }
 
-    public function update(Request $request, $id){
-        // 1. Validate the data from the form
+    public function update(Request $request, $id)
+    {
         $request->validate([
-            'category'    => 'required|array|between:1,3',
+            'category' => 'required|array|between:1,3',
             'description' => 'required|min:1|max:1000',
-            'image'       => 'mimes:jpg,png,jpeg,gif|max:1048'
+            'images.*' => 'mimes:jpg,png,jpeg,gif|max:2048'
         ]);
-        
-        // 2. Update the post
-        $post              = $this->post->findOrFail($id);
+
+        $post = $this->post->with('images')->findOrFail($id);
         $post->description = $request->description;
-
-        // If there is a new image
-        if($request->image){
-            $post->image ='data:image/' . $request->image->extension() . ';base64,' . base64_encode(file_get_contents($request->image));
-        }
-
         $post->save();
 
-        // 3. Delete all records from category_post related to this post
+        // Update categories
         $post->categoryPost()->delete();
-        // Use the relationship Post::categoryPost() to select the records related to a post
-        // Equivalent: DELETE FROM category_post WHERE post_id = $id
-        
-        // 4. Save the new categories to category_post table
-        foreach($request->category as $category_id){
+        foreach ($request->category as $category_id) {
             $category_post[] = ['category_id' => $category_id];
         }
         $post->categoryPost()->createMany($category_post);
-                            // save multiple records
 
-        // 5. Redirect to Show Post page (to confirm the update)
-        return redirect()->route('post.show', $id);
+        // Add new images
+        if ($request->has('images')) {
+            foreach ($request->images as $image) {
+                $post->images()->create([
+                    'image' => 'data:image/' . $image->extension() . ';base64,' . base64_encode(file_get_contents($image))
+                ]);
+            }
+        }
+
+        return redirect()->route('post.show', $id)->with('success', 'Post updated successfully.');
     }
 
-    public function destroy($id){
+
+
+
+    public function destroy($id)
+    {
         $this->post->destroy($id);
 
         return redirect()->route('index');
