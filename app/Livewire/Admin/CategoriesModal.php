@@ -15,7 +15,7 @@ class CategoriesModal extends Component
     ];
 
     protected $listeners = [
-        'editCategory' => 'edit' 
+        'editCategory' => 'edit'
     ];
 
     public function edit($id)
@@ -25,16 +25,26 @@ class CategoriesModal extends Component
         $this->name = $category->name;
 
         $this->dispatchBrowserEvent('open-modal', ['id' => 'edit-category']);
+
+        info("Opening modal for category $id");
     }
 
     public function update()
     {
-        $this->validate();
-        Category::find($this->categoryId)->update(['name' => $this->name]);
+        try {
+            $this->validate();
 
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'edit-category']);
-        session()->flash('success', 'Category updated successfully!');
+            Category::find($this->categoryId)->update(['name' => $this->name]);
+
+            $this->dispatchBrowserEvent('close-modal', ['id' => 'edit-category']);
+            session()->flash('success', 'Category updated successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+         
+            $this->dispatchBrowserEvent('open-modal', ['id' => 'edit-category']);
+            throw $e;
+        }
     }
+
 
 
     public function render()

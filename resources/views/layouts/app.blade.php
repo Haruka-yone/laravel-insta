@@ -30,7 +30,7 @@
 <body style="background-color:#f4f2f0">
     <div id="app">
         @if (!View::hasSection('hideNavbar'))
-            <nav class="navbar navbar-expand-lg shadow-sm fixed-top"
+            <nav class="navbar navbar-expand-lg shadow-sm"
                 style="background: linear-gradient(90deg, #6F6358, #B4AA9A);">
                 <div class="container">
                     <!-- Brand -->
@@ -160,7 +160,7 @@
             </nav>
         @endif
 
-        <main class="pt-5 mt-5">
+        <main class="py-5">
             <div class="container">
                 <div class="row justify-content-center">
                     {{-- [SOON] Admin Controls --}}
