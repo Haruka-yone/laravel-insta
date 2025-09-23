@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Story;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -16,11 +17,13 @@ class HomeController extends Controller
      * @return void
      */
 
+    private $story;
     private $post;
     private $user;
 
-    public function __construct(Post $post, User $user)
+    public function __construct(Post $post, User $user, Story $story)
     {
+        $this->story = $story;
         $this->post = $post;
         $this->user = $user;
     }
@@ -37,10 +40,32 @@ class HomeController extends Controller
         $all_suggested_users = $this->getSuggestedUsers();
         $suggested_users = array_slice($all_suggested_users, 0, 5);
 
+        $stories = Story::with('user')
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->get();
+
+        // per user grouping
+        $storiesByUser = $stories->groupBy('user_id');
+
+        $storiesByUserArray = $storiesByUser->map(function($posts){
+            return $posts->map(function($p){
+                return [
+                    'image'       => $p->image,
+                    'description' => $p->description,
+                    'user_name'   => $p->user->name,
+                    'user_avatar' => $p->user->avatar,
+                    'created_at'  => $p->created_at->diffForHumans(),
+                ];
+            });
+        })->map->values()->toArray();
+
         return view('users.home')
             ->with('home_posts', $home_posts)
             ->with('suggested_users', $suggested_users)
-            ->with('all_suggested_users', $all_suggested_users);
+            ->with('all_suggested_users', $all_suggested_users)
+            ->with('storiesByUser', $storiesByUser)
+            ->with('storiesByUserArray', $storiesByUserArray);
             // ->with('all_posts', $all_posts);
     }
 
