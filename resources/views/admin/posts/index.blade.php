@@ -64,25 +64,23 @@
                         @endif
                     </td>
                     <td>
-                        @if (Auth::user()->id !== $post->user->id)
-                            <div class="dropdown">
-                                <button class="btn btn-sm" data-bs-toggle="dropdown">
-                                    <i class="fa-solid fa-ellipsis"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    @if ($post->trashed())
-                                        <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#activate-user-{{ $post->user->id }}">
-                                            <i class="fa-solid fa-eye"></i> Unhide post {{ $post->id }}
-                                        </button>
-                                    @else
-                                        <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deactivate-user-{{ $post->user->id }}">
-                                            <i class="fa-solid fa-eye-slash"></i> Hide post {{ $post->id }}
-                                        </button>
-                                    @endif  
-                                </div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                @if ($post->trashed())
+                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#activate-user-{{ $post->user->id }}">
+                                        <i class="fa-solid fa-eye"></i> Unhide post {{ $post->id }}
+                                    </button>
+                                @else
+                                    <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deactivate-user-{{ $post->user->id }}">
+                                        <i class="fa-solid fa-eye-slash"></i> Hide post {{ $post->id }}
+                                    </button>
+                                @endif  
                             </div>
+                        </div>
                         @include('admin.posts.modals.status')
-                        @endif
                     </td>
                 </tr>
             @endforeach
