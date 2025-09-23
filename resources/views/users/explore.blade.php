@@ -31,7 +31,7 @@
                 @foreach ($posts as $post)
                     <div class="col-4 col-md-3 mb-3">
                         <a href="{{ route('post.show', $post->id) }}">
-                            <img src="{{ $post->image }}" alt="image" class="img-fluid rounded shadow-sm mt-3" style="width: 100%; height: 200px; object-fit: cover;">
+                            <img src="{{ $post->images->first()->image }}" alt="image" class="img-fluid rounded shadow-sm mt-3" style="width: 100%; height: 200px; object-fit: cover;">
                         </a>
                     </div>
                 @endforeach

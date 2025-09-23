@@ -1,8 +1,6 @@
 {{-- clickable image --}}
+{{-- clickable image --}}
 <div class="container p-0">
-    {{-- <a href="{{ route('post.show', $post->id) }}">
-        <img src="{{ $post->image }}" alt="post id {{ $post->id }}" class="w-100">
-    </a> --}}
     @if ($post->images->count() > 1)
         {{-- Bootstrap Carousel for multiple images --}}
         <div id="carousel-{{ $post->id }}" class="carousel slide" data-bs-ride="carousel">
@@ -10,7 +8,8 @@
                 @foreach ($post->images as $index => $image)
                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                         <a href="{{ route('post.show', $post->id) }}">
-                            <img src="{{ $image->image }}" class="d-block w-100" alt="post image {{ $post->id }}">
+                            <img src="{{ $image->image }}" class="d-block w-100 uniform-img"
+                                alt="post image {{ $post->id }}">
                         </a>
                     </div>
                 @endforeach
@@ -27,11 +26,12 @@
     @elseif($post->images->count() === 1)
         {{-- Single image --}}
         <a href="{{ route('post.show', $post->id) }}">
-            <img src="{{ $post->images->first()->image }}" class="w-100" alt="post image {{ $post->id }}">
+            <img src="{{ $post->images->first()->image }}" class="w-100 uniform-img"
+                alt="post image {{ $post->id }}">
         </a>
     @endif
-
 </div>
+
 <div class="card-body">
     {{-- heard button + no. of likes + categories --}}
     <div class="row align-items-center">

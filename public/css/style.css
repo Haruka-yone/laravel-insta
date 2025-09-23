@@ -267,3 +267,10 @@
     padding: 0;
     line-height: 1;
 }
+
+.uniform-img {
+    height: 350px; 
+    object-fit: cover;
+    border-radius: 3px;
+}
+

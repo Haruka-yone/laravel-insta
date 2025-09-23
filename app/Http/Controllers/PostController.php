@@ -105,6 +105,16 @@ class PostController extends Controller
         }
         $post->categoryPost()->createMany($category_post);
 
+        // ✅ Handle image deletions
+        if ($request->has('delete_images')) {
+            foreach ($request->delete_images as $imageId) {
+                $image = $post->images()->find($imageId);
+                if ($image) {
+                    $image->delete();
+                }
+            }
+        }
+
         // Add new images
         if ($request->has('images')) {
             foreach ($request->images as $image) {
@@ -116,9 +126,6 @@ class PostController extends Controller
 
         return redirect()->route('post.show', $id)->with('success', 'Post updated successfully.');
     }
-
-
-
 
     public function destroy($id)
     {
