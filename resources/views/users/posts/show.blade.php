@@ -12,10 +12,17 @@
             position: absolute;
             top: 65px;
         }
+
+        /* 🔹 Make all post images uniform */
+        .uniform-img {
+            height: 500px; /* adjust as needed */
+            object-fit: cover;
+            width: 100%;
+        }
     </style>
+
     <div class="row border shadow">
         <div class="col p-0 border-end">
-            {{-- <img src="{{ $post->image }}" alt="{{ $post->id }}" class="w-100"> --}}
             <div class="col p-0 border-end">
                 @if ($post->images->count() > 1)
                     {{-- Bootstrap Carousel --}}
@@ -23,7 +30,9 @@
                         <div class="carousel-inner">
                             @foreach ($post->images as $key => $image)
                                 <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                    <img src="{{ $image->image }}" alt="Post image {{ $post->id }}" class="w-100">
+                                    <img src="{{ $image->image }}" 
+                                         alt="Post image {{ $post->id }}" 
+                                         class="d-block uniform-img">
                                 </div>
                             @endforeach
                         </div>
@@ -40,11 +49,13 @@
                     </div>
                 @else
                     {{-- Single Image --}}
-                    <img src="{{ $post->images->first()->image }}" alt="Post image {{ $post->id }}" class="w-100">
+                    <img src="{{ $post->images->first()->image }}" 
+                         alt="Post image {{ $post->id }}" 
+                         class="uniform-img">
                 @endif
             </div>
-
         </div>
+
         <div class="col-4 px-0 bg-white">
             <div class="card border-0">
                 <div class="card-header bg-white py-3">
@@ -64,7 +75,7 @@
                                 class="text-decoration-none text-dark">{{ $post->user->name }}</a>
                         </div>
                         <div class="col-auto">
-                            {{-- If you are the OWNER of the post, you can Edit or Delete this post. --}}
+                            {{-- If you are the OWNER of the post --}}
                             @if (Auth::user()->id === $post->user->id)
                                 <div class="dropdown">
                                     <button class="btn btn-sm shadow-none" data-bs-toggle="dropdown">
@@ -80,12 +91,11 @@
                                             <i class="fa-regular fa-trash-can"></i> Delete
                                         </button>
                                     </div>
-                                    {{-- include model here --}}
+                                    {{-- include modal --}}
                                     @include('users.posts.contents.modals.delete')
                                 </div>
                             @else
-                                {{-- If you are NOT THE OWNER of the post, show a Follow/Unfollow button. To be discussed soon. --}}
-                                {{-- Show Follow button for now. --}}
+                                {{-- Follow/Unfollow --}}
                                 @if ($post->user->isFollowed())
                                     <form action="{{ route('follow.destroy', $post->user->id) }}" method="post">
                                         @csrf
@@ -103,8 +113,9 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body w-100">
-                    {{-- heard button + no. of likes + categories --}}
+                    {{-- like + categories --}}
                     <div class="row align-items-center">
                         <div class="col-auto">
                             @if ($post->isLiked())
@@ -140,7 +151,7 @@
                         </div>
                     </div>
 
-                    {{-- owner + desciription --}}
+                    {{-- owner + description --}}
                     <a href="{{ route('profile.show', $post->user->id) }}" class="text-decoration-none text-dark fw-bold">
                         {{ $post->user->name }}
                     </a>
@@ -150,12 +161,11 @@
 
                     {{-- comments --}}
                     <div class="mt-4">
-
                         <form action="{{ route('comment.store', $post->id) }}" method="post">
                             @csrf
-
                             <div class="input-group">
-                                <textarea name="comment_body{{ $post->id }}" cols="30" rows="1" class="form-control form-control-sm"
+                                <textarea name="comment_body{{ $post->id }}" cols="30" rows="1"
+                                    class="form-control form-control-sm"
                                     placeholder="Add a comment...">{{ old('comment_body' . $post->id) }}</textarea>
                                 <button type="submit" class="btn btn-outline-secondary btn-sm" title="Post">
                                     <i class="fa-regular fa-paper-plane"></i>
@@ -167,7 +177,7 @@
                             @enderror
                         </form>
 
-                        {{-- Show all comments here --}}
+                        {{-- Show all comments --}}
                         @if ($post->comments->isNotEmpty())
                             <ul class="list-group mt-2">
                                 @foreach ($post->comments as $comment)
@@ -184,7 +194,6 @@
                                             <span
                                                 class="text-uppercase text-muted xsmall">{{ date('M d, Y', strtotime($comment->created_at)) }}</span>
 
-                                            {{-- If the Auth user is the owner , show delete btn --}}
                                             @if (Auth::user()->id === $comment->user->id)
                                                 &middot;
                                                 <button type="submit"

@@ -196,3 +196,10 @@
     height: 3.5rem;
     object-fit: cover;
 }
+
+.uniform-img {
+    height: 350px; 
+    object-fit: cover;
+    border-radius: 3px;
+}
+
