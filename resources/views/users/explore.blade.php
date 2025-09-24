@@ -30,8 +30,38 @@
             <div class="row mt-5">
                 @foreach ($posts as $post)
                     <div class="col-4 col-md-3 mb-3">
-                        <a href="{{ route('post.show', $post->id) }}">
-                            <img src="{{ $post->images->first()->image }}" alt="image" class="img-fluid rounded shadow-sm mt-3" style="width: 100%; height: 200px; object-fit: cover;">
+                        <a href="{{ route('post.show', $post->id) }}" class="d-block">
+                            @if ($post->images->count() > 1)
+                                {{-- Bootstrap Carousel (with controls, fixed height) --}}
+                                <div id="carouselPost{{ $post->id }}" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach ($post->images as $key => $image)
+                                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                                <img src="{{ $image->image }}" 
+                                                    alt="Post image {{ $post->id }}" 
+                                                    class="d-block w-100 rounded shadow-sm mt-3"
+                                                    style="height: 200px; object-fit: cover;">
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    {{-- Controls --}}
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselPost{{ $post->id }}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselPost{{ $post->id }}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </button>
+                                </div>
+                            @else
+                                {{-- Single Image --}}
+                                <img src="{{ $post->images->first()->image }}" 
+                                    alt="Post image {{ $post->id }}" 
+                                    class="img-fluid rounded shadow-sm mt-3"
+                                    style="width: 100%; height: 200px; object-fit: cover;">
+                            @endif
                         </a>
                     </div>
                 @endforeach

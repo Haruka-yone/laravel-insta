@@ -20,6 +20,7 @@
 /storage/pail
 /storage/framework/views
 /storage/framework/cache
+/storage/framework/sessions
 /storage/logs
 /bootstrap/cache/*.php
 /vendor
