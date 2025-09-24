@@ -126,7 +126,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:XQhzuAd6dewXm1vpf+CbxNdAFt5H0p6c80YYfTBaIkg=',
+    'key' => 'base64:2hdV9DSYgR0MBsLoYqePoHxSfgeLw9P3uC4HltrtuKc=',
     'previous_keys' => 
     array (
     ),
