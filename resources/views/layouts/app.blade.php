@@ -190,6 +190,8 @@
             </div>
         </main>
     </div>
+    
+    @yield('scripts') {{-- hiro add --}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
