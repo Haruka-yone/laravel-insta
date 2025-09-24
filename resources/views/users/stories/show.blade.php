@@ -18,9 +18,7 @@
                 </div>
 
                 {{-- 右下に＋ボタン --}}
-                <a href="{{ route('story.create') }}" 
-                   class="btn btn-primary btn-sm rounded-circle position-absolute" 
-                   style="bottom:0; right:0; transform:translate(30%,30%); width:24px; height:24px; display:flex; align-items:center; justify-content:center;">
+                <a href="{{ route('story.create') }}" class="btn btn-primary btn-sm rounded-circle position-absolute" style="bottom:0; right:0; transform:translate(30%,30%); width:24px; height:24px; display:flex; align-items:center; justify-content:center;">
                     <i class="fa-solid fa-plus" style="font-size:12px;"></i>
                 </a>
             </button>
@@ -87,9 +85,12 @@
         <!-- user info -->
         <div id="story-user-info" style="position:absolute; top:20px; left:10px; display:flex; align-items:center; gap:8px; color:white; z-index:10;">
             <img id="story-user-avatar" src="" style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
+
+            <i id="story-user-icon" class="fa-solid fa-circle-user" style="font-size:32px; display:none;"></i>
             <div>
-                <div id="story-user-name" style="font-weight:bold; font-size:0.9rem;"></div>
-                <div id="story-created-at" style="font-size:0.75rem; opacity:0.8;"></div>
+                <span id="story-user-name" style="font-weight:bold; font-size:0.9rem;"></span> 
+                &nbsp;
+                <span id="story-created-at" style="font-size:0.75rem; opacity:0.8;"></span>
             </div>
         </div>
 
@@ -109,8 +110,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeBtn = document.getElementById("story-close");
 
     const userAvatar = document.getElementById("story-user-avatar");
+    const userIcon   = document.getElementById("story-user-icon");
     const userName = document.getElementById("story-user-name");
     const createdAt = document.getElementById("story-created-at");
+
+    let storyTimeout; // タイマー保持用
 
     // ページロード時に全ストーリーリングをチェック
     document.querySelectorAll(".story-wrapper").forEach(wrapper => {
@@ -157,12 +161,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 img.src = story.image;
                 desc.textContent = story.description;
 
-                if (story.user_avatar) {
-                    userAvatar.src = story.user_avatar;
-                    userAvatar.style.display = "block";
-                } else {
-                    userAvatar.style.display = "none";
-                }
+                
+if (story.user_avatar) {
+    userAvatar.src = story.user_avatar;
+    userAvatar.style.display = "block";
+    userIcon.style.display = "none";
+} else {
+    userAvatar.style.display = "none";
+    userIcon.style.display = "block";
+}
                 userName.textContent = story.user_name;
                 createdAt.textContent = story.created_at;
 
@@ -170,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 innerBar.style.width = "0%"; // reset
                 setTimeout(() => innerBar.style.width = "100%", 50);
 
-                setTimeout(() => {
+                storyTimeout = setTimeout(() => {
                     if (current + 1 < stories.length) {
                         current++;
                         showStory(current);
@@ -196,6 +203,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             closeBtn.onclick = () => {
                 overlay.style.display = "none";
+
+                // タイマーをクリア
+                clearTimeout(storyTimeout);
                 Array.from(progressContainer.children).forEach(bar => bar.firstChild.style.width = "0%");
             };
         });

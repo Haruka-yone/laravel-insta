@@ -53,6 +53,7 @@ class HomeController extends Controller
                 return [
                     'image'       => $p->image,
                     'description' => $p->description,
+                    'user_id'     => $p->user_id,
                     'user_name'   => $p->user->name,
                     'user_avatar' => $p->user->avatar,
                     'created_at'  => $p->created_at->diffForHumans(),

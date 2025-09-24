@@ -203,25 +203,22 @@
         });
     </script>
 
-    <script>
-        window.addEventListener('open-modal', event => {
-            const modal = document.getElementById(event.detail.id);
-            if (modal) {
-                const modalInstance = new bootstrap.Modal(modal);
-                modalInstance.show();
-            }
-        });
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // カテゴリ編集モーダルの制御
+            window.addEventListener('show-edit-modal', () => {
+                const modal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+                modal.show();
+            });
 
-        window.addEventListener('close-modal', event => {
-            const modal = document.getElementById(event.detail.id);
-            if (modal) {
-                const modalInstance = bootstrap.Modal.getInstance(modal);
-                if (modalInstance) {
-                    modalInstance.hide();
+            window.addEventListener('hide-edit-modal', () => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+                if (modal) {
+                    modal.hide();
                 }
-            }
+            });
         });
-    </script>
+    </script> --}}
 
     @stack('scripts')
     @livewireScripts

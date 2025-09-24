@@ -30,7 +30,7 @@
                     <td>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-sm btn-outline-warning" wire:click="$emit('editCategory', {{ $category->id }})">
+                                <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#edit-category-{{ $category->id }}">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                                 <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-category-{{ $category->id }}">
@@ -54,5 +54,4 @@
                 </tr>
         </tbody>
     </table>
-    @livewire('admin.categories-modal')
 @endsection
