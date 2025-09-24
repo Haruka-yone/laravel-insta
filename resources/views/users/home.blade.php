@@ -3,6 +3,8 @@
 @section('title', 'Home')
 
 @section('content')
+    @include('users.stories.show')
+
     <div class="row gx-5">
         {{-- ===== MAIN POSTS FEED ===== --}}
         <div class="col-8">
