@@ -37,7 +37,27 @@
                 <tr>
                     <td>{{ $post->id }}</td>
                     <td>
-                        <img src="{{ $post->image }}" alt="post id {{ $post->id }}" class="mx-auto avatar-lg">
+                        @if ($post->images->count() > 1)
+                            <div id="carousel-{{ $post->id }}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner square-carousel">
+                                    @foreach ($post->images as $index => $image)
+                                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                            <img src="{{ $image->image }}" class="d-block mx-auto square-img" alt="{{ $post->description }}">
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ $post->id }}"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ $post->id }}"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            </div>
+                        @elseif($post->images->count() === 1)
+                            <img src="{{ $post->images->first()->image }}" alt="{{ $post->description }}" class="mx-auto avatar-lg">
+                        @endif
                     </td>
                     <td>
                         @if ($post->categoryPost->isNotEmpty())
