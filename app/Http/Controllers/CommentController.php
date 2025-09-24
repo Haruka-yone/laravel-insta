@@ -31,11 +31,22 @@ class CommentController extends Controller
         $this->comment->post_id = $post_id;
         $this->comment->save();
         
-        return redirect()->route('post.show', $post_id);
+        // return redirect()->route('post.show', $post_id);
+
+        return response()->json([
+            'success' => true,
+            'comment' => $this->comment->load('user'),
+            'can_delete' => Auth::id() === $this->comment->user_id,
+        ]);
+
     }
 
-    public function destroy($id){
+    public function destroy(Request $request, $id){
         $this->comment->destroy($id);
+
+        if ($request->ajax() || $request->wantsJson()) {
+        return response()->json(['success' => true, 'id' => $id]);
+        }
 
         return redirect()->back();
     }

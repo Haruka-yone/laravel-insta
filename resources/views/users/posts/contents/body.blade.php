@@ -37,7 +37,7 @@
     <div class="row align-items-center">
         <div class="col-auto">
             @if ($post->isLiked())
-                <form action="{{ route('like.destroy', $post->id) }}" method="post">
+                <form action="{{ route('like.destroy', $post->id) }}" method="post" class="like-form" data-post-id="{{ $post->id }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm shadow-none p-0">
@@ -45,7 +45,7 @@
                     </button>
                 </form>
             @else
-                <form action="{{ route('like.store', $post->id) }}" method="post">
+                <form action="{{ route('like.store', $post->id) }}" method="post" class="like-form" data-post-id="{{ $post->id }}">
                     @csrf
                     <button type="submit" class="btn btn-sm shadow-none p-0">
                         <i class="fa-regular fa-heart"></i>
@@ -54,7 +54,7 @@
             @endif
         </div>
         <div class="col-auto px-0">
-            <span>{{ $post->likes->count() }}</span>
+            <span class="like-count" data-post-id="{{ $post->id }}">{{ $post->likes->count() }}</span>
         </div>
         <div class="col text-end">
             @forelse ($post->categoryPost as $category_post)

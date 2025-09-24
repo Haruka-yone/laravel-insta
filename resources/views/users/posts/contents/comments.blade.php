@@ -25,7 +25,7 @@
 
                         {{-- If the Auth user is the owner , show delete btn --}}
                         @if (Auth::user()->id === $comment->user->id)
-                            <form action="{{ route('comment.destroy', $comment->id) }}" method="post" class="m-0">
+                            <form action="{{ route('comment.destroy', $comment->id) }}" method="post" class="m-0 delete-comment-form" data-comment-id="{{ $comment->id }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
@@ -53,7 +53,7 @@
     @endif
 
     {{-- Add Comment --}}
-    <form action="{{ route('comment.store', $post->id) }}" method="post" class="mt-2">
+    <form action="{{ route('comment.store', $post->id) }}" method="post" class="mt-2 comment-form" data-post-id="{{ $post->id }}">
         @csrf
         <div class="input-group">
             <textarea name="comment_body{{ $post->id }}" 
