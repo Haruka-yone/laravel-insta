@@ -197,9 +197,102 @@
     object-fit: cover;
 }
 
+
+/* progress bar */
+.story-progress-bar {
+    flex: 1;
+    background: rgba(255,255,255,0.3);
+    height: 100%;
+    position: relative;
+}
+.story-progress-bar-inner {
+    background: #fff;
+    width: 0%;
+    height: 100%;
+    transition: width 5s linear;
+}
+
+/* story ring */
+.story-ring,
+.story-seen,
+.story-empty {
+    padding: 3px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.story-ring {
+    background: conic-gradient(
+        #feda75,
+        #fa7e1e,
+        #d62976,
+        #962fbf,
+        #4f5bd5,
+        #feda75
+    );
+}
+.story-seen {
+    background: #ccc;
+}
+.story-empty {
+    background: #ddd;
+}
+
+/* icon,img */
+.story-ring img,
+.story-seen img,
+.story-empty img,
+.story-ring .story-avatar-placeholder,
+.story-seen .story-avatar-placeholder,
+.story-empty .story-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+}
+
+.story-avatar-placeholder i {
+    font-size: 75px;
+    color: #999;
+}
+
+/* ＋btn */
+.story-wrapper .btn {
+    font-size: 0.75rem;
+    padding: 0;
+    line-height: 1;
+}
+
 .uniform-img {
     height: 350px; 
     object-fit: cover;
     border-radius: 3px;
 }
+
+/* for admin posts image */
+.square-carousel {
+    width: 9rem;   
+    height: 9rem;
+    margin: auto;   
+    position: relative;
+    overflow: hidden;
+}
+
+.square-carousel .carousel-item {
+    width: 9rem;
+    height: 9rem;
+}
+
+.square-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+
 

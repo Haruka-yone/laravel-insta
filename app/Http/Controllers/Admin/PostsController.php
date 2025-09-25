@@ -39,7 +39,7 @@ class PostsController extends Controller
 
         if(!empty($selectedCategories)){
             $query->whereHas('categoryPost', function($q) use($selectedCategories){
-                $q->wherIn('category_id', $selectedCategories);
+                $q->whereIn('category_id', $selectedCategories);
             });
         }
         
@@ -47,7 +47,7 @@ class PostsController extends Controller
         
         $all_categories = $this->category->all();
 
-        return view('admin.posts.index')->with('all_posts', $all_posts)->with('all_categories',$all_categories);
+        return view('admin.posts.index', ['all_posts' => $all_posts, 'all_categories'=> $all_categories, 'selectedCategories'=> $selectedCategories, 'keyword' => $keyword]);
     }
 
     public function hide($id){

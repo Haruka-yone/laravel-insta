@@ -1,54 +1,58 @@
-<?php
+<!-- <?php 
 
-namespace App\Livewire\Admin;
+// namespace App\Livewire\Admin;
 
-use App\Models\Category;
-use Livewire\Component;
+// use App\Models\Category;
+// use Livewire\Component;
 
-class CategoriesModal extends Component
-{
-    public $name;
-    public $categoryId;
+// class CategoriesModal extends Component
+// {
+//     public $categoryId;
+//     public $name;
 
-    protected $rules = [
-        'name' => 'required|min:3|max:50',
-    ];
+//     protected $rules = [
+//         'name' => 'required|max:50',
+//     ];
 
-    protected $listeners = [
-        'editCategory' => 'edit'
-    ];
+//     protected $listeners = [
+//         'open-modal' => 'loadCategory'
+//     ];
 
-    public function edit($id)
-    {
-        $category = Category::findOrFail($id);
-        $this->categoryId = $id;
-        $this->name = $category->name;
+//     // モーダルを開くときに呼び出される
+//     public function loadCategory($id)
+//     {
+//         $category = Category::findOrFail($id);
+//         $this->categoryId = $category->id;
+//         $this->name = $category->name;
 
-        $this->dispatchBrowserEvent('open-modal', ['id' => 'edit-category']);
+//         // JSにモーダル表示を伝える
+//         $this->dispatch('show-edit-modal');
+//     }
 
-        info("Opening modal for category $id");
-    }
+//     public function update()
+//     {
+//         try {
+//             $this->validate();
 
-    public function update()
-    {
-        try {
-            $this->validate();
+//             $category = Category::findOrFail($this->categoryId);
+//             $category->name = $this->name;
+//             $category->save();
 
-            Category::find($this->categoryId)->update(['name' => $this->name]);
+//             // 成功したらモーダルを閉じる
+//             $this->dispatch('hide-edit-modal');
 
-            $this->dispatchBrowserEvent('close-modal', ['id' => 'edit-category']);
-            session()->flash('success', 'Category updated successfully!');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-         
-            $this->dispatchBrowserEvent('open-modal', ['id' => 'edit-category']);
-            throw $e;
-        }
-    }
+//             // 入力フィールドをリセット
+//             $this->reset(['categoryId', 'name']);
 
+//         } catch (\Illuminate\Validation\ValidationException $e) {
+//             // バリデーションエラー時は閉じない
+//             throw $e;
+//         }
+//     }
 
-
-    public function render()
-    {
-        return view('livewire.admin.categories-modal');
-    }
-}
+//     public function render()
+//     {
+//         return view('livewire.admin.categories-modal');
+//     }
+    
+// }

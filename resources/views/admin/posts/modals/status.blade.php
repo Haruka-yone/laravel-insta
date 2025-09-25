@@ -1,6 +1,6 @@
 @if ($post->trashed())
     {{-- unhide --}}
-    <div class="modal fade" id="activate-user-{{ $post->user->id }}">
+    <div class="modal fade" id="activate-user-{{ $post->id }}">
         <div class="modal-dialog">
             <div class="modal-content border-primary">
                 <div class="modal-header border-primary">
@@ -29,7 +29,7 @@
     </div>
 @else
     {{-- Hide --}}
-    <div class="modal fade" id="deactivate-user-{{ $post->user->id }}">
+    <div class="modal fade" id="deactivate-user-{{ $post->id }}">
         <div class="modal-dialog">
             <div class="modal-content border-danger">
                 <div class="modal-header border-danger">

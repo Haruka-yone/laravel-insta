@@ -3,6 +3,8 @@
 @section('title', 'Home')
 
 @section('content')
+    @include('users.stories.show')
+
     <div class="row gx-5">
         {{-- ===== MAIN POSTS FEED ===== --}}
         <div class="col-8">
@@ -136,3 +138,166 @@
     </div>
 
 @endsection
+
+@section('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.comment-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault(); // ページリロードを止める
+
+                const postId = form.dataset.postId;
+                const url = form.action;
+                const formData = new FormData(form);
+
+                try {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: formData
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        const commentList = form.closest('.mt-3').querySelector('.list-group');
+                        const newComment = document.createElement('li');
+                        newComment.classList.add('list-group-item', 'border-0', 'p-0', 'mb-2');
+
+                        let deleteFormHtml = "";
+                        if (data.can_delete) {
+                            deleteFormHtml = `
+                                <form action="/comment/${data.comment.id}/destroy" method="post" class="delete-comment-form" data-comment-id="${data.comment.id}">
+                                    <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').content}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="border-0 bg-transparent text-danger p-0 xsmall">Delete</button>
+                                </form>
+                            `;
+                        }
+
+                        newComment.innerHTML = `
+                            <a href="/profile/${data.comment.user.id}" class="text-decoration-none text-dark fw-bold">
+                                ${data.comment.user.name}
+                            </a>
+                            &nbsp;
+                            <p class="d-inline fw-light">${data.comment.body}</p>
+                            <br>
+                            <span class="text-uppercase text-muted xsmall">just now</span>
+                            ${deleteFormHtml}
+                        `;
+
+                        if (commentList) {
+                            commentList.prepend(newComment);
+                        }
+
+                        form.reset(); // フォームをクリア
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('submit', async (e) => {
+            if (!e.target.classList.contains('delete-comment-form')) return; // delete-comment-form 以外は無視
+            e.preventDefault();
+
+            const form = e.target;
+            const url = form.action;
+            const formData = new FormData(form);
+
+            // LaravelにDELETEリクエストだと伝える
+            formData.append('_method', 'DELETE');
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST', // LaravelにDELETEを伝えるためPOSTにする
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    const commentItem = form.closest('li');
+                    if (commentItem) {
+                        commentItem.remove();
+                    }
+                }
+            } catch (err) {
+                console.error("Delete failed:", err);
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('submit', async (e) => {
+            if (!e.target.classList.contains('like-form')) return;
+            e.preventDefault();
+
+            const form = e.target;
+            const url = form.action;
+            const method = form.querySelector('input[name="_method"]')?.value || 'POST';
+            const formData = new FormData(form);
+
+            try {
+                const res = await fetch(url, {
+                    method: method, // POST or DELETE
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    const icon = form.querySelector('i');
+
+                    if (data.liked) {
+                        // ❤️ いいね済みに変更
+                        icon.classList.remove('fa-regular');
+                        icon.classList.add('fa-solid', 'text-danger');
+
+                        if (!form.querySelector('input[name="_method"]')) {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = '_method';
+                            input.value = 'DELETE';
+                            form.appendChild(input);
+                        }
+                        form.action = `/like/${form.dataset.postId}/destroy`;
+
+                    } else {
+                        // 🤍 いいね解除に変更
+                        icon.classList.remove('fa-solid', 'text-danger');
+                        icon.classList.add('fa-regular');
+
+                        const methodInput = form.querySelector('input[name="_method"]');
+                        if (methodInput) methodInput.remove();
+                        form.action = `/like/${form.dataset.postId}/store`;
+                    }
+
+                    // カウント更新
+                    const countEl = document.querySelector(`.like-count[data-post-id="${form.dataset.postId}"]`);
+                    if (countEl) {
+                        countEl.textContent = data.count;
+                    }
+                }
+            } catch (err) {
+                console.error("Like toggle failed:", err);
+            }
+        });
+    });
+
+    </script>
+@endsection
+
