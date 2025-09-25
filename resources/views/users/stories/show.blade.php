@@ -1,6 +1,6 @@
 <div class="d-flex">
 
-    {{-- 自分のストーリー枠 --}}
+    {{-- my story --}}
     <div class="mx-2 text-center story-wrapper" data-user-id="{{ Auth::id() }}">
         @if($storiesByUser->has(Auth::id()))
             @php $firstStory = $storiesByUser[Auth::id()]->first() @endphp
@@ -17,7 +17,7 @@
                     @endif
                 </div>
 
-                {{-- 右下に＋ボタン --}}
+                {{-- add button --}}
                 <a href="{{ route('story.create') }}" class="btn btn-primary btn-sm rounded-circle position-absolute" style="bottom:0; right:0; transform:translate(30%,30%); width:24px; height:24px; display:flex; align-items:center; justify-content:center;">
                     <i class="fa-solid fa-plus" style="font-size:12px;"></i>
                 </a>
@@ -34,7 +34,7 @@
                     @endif
                 </div>
 
-                {{-- 右下に＋ボタン --}}
+                {{-- add button --}}
                 <a href="{{ route('story.create') }}" 
                    class="btn btn-primary btn-sm rounded-circle position-absolute" 
                    style="bottom:0; right:0; transform:translate(30%,30%); width:24px; height:24px; display:flex; align-items:center; justify-content:center;">
@@ -45,7 +45,7 @@
         <p class="small">Your story</p>
     </div>
 
-    {{-- 他ユーザーのストーリー --}}
+    {{-- other's story --}}
     @foreach($storiesByUser as $userId => $posts)
         @if($userId !== Auth::id())
             @php $firstPost = $posts->first(); @endphp
@@ -83,19 +83,25 @@
         <img id="story-img" src="" style="width:100%; height:100%; object-fit:cover;">
 
         <!-- user info -->
-        <div id="story-user-info" style="position:absolute; top:20px; left:10px; display:flex; align-items:center; gap:8px; color:white; z-index:10;">
+        <div id="story-user-info">
             <img id="story-user-avatar" src="" style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
 
             <i id="story-user-icon" class="fa-solid fa-circle-user" style="font-size:32px; display:none;"></i>
             <div>
-                <span id="story-user-name" style="font-weight:bold; font-size:0.9rem;"></span> 
+                <span id="story-user-name" style="font-weight:bold; font-size:0.9rem; text-shadow: #000000 1px 0 10px;"></span> 
                 &nbsp;
-                <span id="story-created-at" style="font-size:0.75rem; opacity:0.8;"></span>
+                <span id="story-created-at" style="font-size:0.75rem; opacity:0.8; text-shadow: #000000 1px 0 10px;"></span>
             </div>
         </div>
 
         <!-- description -->
-        <div id="story-desc" style="position:absolute; bottom:10px; left:10px; right:10px; color:white; text-align:left; z-index:10; font-size:0.9rem;"></div>
+        <div id="story-desc" style="position:absolute; bottom:45px; left:15px; right:15px; color:white; text-align:left; z-index:10; font-size:0.9rem; #000000 1px 0 10px; text-shadow: 0 0 8px rgba(0,0,0,0.7);
+        white-space: normal; word-break: break-word;"></div>
+        <div style="display:flex; gap:20px; position:absolute; bottom:20px; left:15px; right:15px; color:white;">
+            <i class="fa-regular fa-heart fa-lg"></i>
+            <i class="fa-regular fa-comment fa-lg"></i>
+            <i class="fa-solid fa-share fa-lg"></i>
+        </div>
     </div>
 </div>
 
@@ -162,14 +168,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 desc.textContent = story.description;
 
                 
-if (story.user_avatar) {
-    userAvatar.src = story.user_avatar;
-    userAvatar.style.display = "block";
-    userIcon.style.display = "none";
-} else {
-    userAvatar.style.display = "none";
-    userIcon.style.display = "block";
-}
+                if (story.user_avatar) {
+                    userAvatar.src = story.user_avatar;
+                    userAvatar.style.display = "block";
+                    userIcon.style.display = "none";
+                } else {
+                    userAvatar.style.display = "none";
+                    userIcon.style.display = "block";
+                }
+                
                 userName.textContent = story.user_name;
                 createdAt.textContent = story.created_at;
 
