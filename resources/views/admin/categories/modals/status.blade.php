@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-category-{{ $category->id }}">
+{{-- <div class="modal fade" id="edit-category-{{ $category->id }}">
     <div class="modal-dialog">
         <div class="modal-content border-warning">
             <div class="modal-header border-warning">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 <div class="modal fade" id="delete-category-{{ $category->id }}">
     <div class="modal-dialog">

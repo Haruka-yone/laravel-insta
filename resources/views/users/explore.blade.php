@@ -3,7 +3,7 @@
 @section('title', 'Explore Category')
 
 @section('content')
-    <h2 class="text-center text-secondary">Search Posts by Category</h2>
+    <h2 class="text-center" style="color:#B0A695;">Search Posts by Category</h2>
 
     <form action="{{ route('categories.explore') }}" method="post" class="d-flex justify-content-center mt-4">
         @csrf
@@ -20,8 +20,8 @@
                 </option>
             @endforeach
         </select>
-        <button type="submit" class="btn btn-secondary ms-2">
-            <i class="fa-solid fa-helicopter"></i>
+        <button type="submit" class="btn ms-2" style="background-color:#776B5D; color:#fff; border:none;">
+            <i class="fa-solid fa-magnifying-glass"></i>
         </button>
     </form>
 
@@ -68,7 +68,7 @@
             </div>
         @else
             <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
-                <h2 class="text-muted text-center ">No posts found.</h2>
+                <h2 class="text-center" style="color:#776B5D;">No posts found.</h2>
             </div>
         @endif
     @endisset

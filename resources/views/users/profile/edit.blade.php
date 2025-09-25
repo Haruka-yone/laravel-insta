@@ -82,6 +82,33 @@
                         @enderror
                     </div>
 
+                    <hr>
+                    
+                    {{-- Password --}}
+                    <div class="mb-4">
+                        <label for="current_password" class="form-label fw-bold" style="color:#776B5D;">Current Password</label>
+                        <input type="password" name="current_password" id="current_password" 
+                            class="form-control shadow-sm border-0">
+                        @error('current_password')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-bold" style="color:#776B5D;">New Password</label>
+                        <input type="password" name="password" id="password" 
+                            class="form-control shadow-sm border-0">
+                        @error('password')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password_confirmation" class="form-label fw-bold" style="color:#776B5D;">Confirm New Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" 
+                            class="form-control shadow-sm border-0">
+                    </div>
+
                     {{-- Save Button (same as Create) --}}
                     <div class="text-end">
                         <button type="submit" class="btn px-5 py-2 rounded-pill fancy-btn shadow-sm"
