@@ -1,4 +1,4 @@
-<!-- <?php 
+<?php 
 
 // namespace App\Livewire\Admin;
 
@@ -9,45 +9,30 @@
 // {
 //     public $categoryId;
 //     public $name;
-
 //     protected $rules = [
-//         'name' => 'required|max:50',
+//         'name' => 'required|string|max:50|unique:categories,name',
 //     ];
-
-//     protected $listeners = [
-//         'open-modal' => 'loadCategory'
+//     protected $messages = [
+//         'name.required' => 'Category name is required.',
+//         'name.unique'   => 'This category name is already taken.',
 //     ];
-
-//     // モーダルを開くときに呼び出される
-//     public function loadCategory($id)
+//     public function mount($category)
 //     {
-//         $category = Category::findOrFail($id);
 //         $this->categoryId = $category->id;
 //         $this->name = $category->name;
-
-//         // JSにモーダル表示を伝える
-//         $this->dispatch('show-edit-modal');
 //     }
-
 //     public function update()
 //     {
-//         try {
-//             $this->validate();
+//         $this->validate();
 
-//             $category = Category::findOrFail($this->categoryId);
-//             $category->name = $this->name;
-//             $category->save();
+//         $category = Category::find($this->categoryId);
+//         $category->name = $this->name;
+//         $category->save();
 
-//             // 成功したらモーダルを閉じる
-//             $this->dispatch('hide-edit-modal');
+//         session()->flash('success', 'Category updated successfully!');
 
-//             // 入力フィールドをリセット
-//             $this->reset(['categoryId', 'name']);
-
-//         } catch (\Illuminate\Validation\ValidationException $e) {
-//             // バリデーションエラー時は閉じない
-//             throw $e;
-//         }
+//         // モーダルを閉じる
+//         $this->dispatch('close-modal', id: $this->categoryId);
 //     }
 
 //     public function render()

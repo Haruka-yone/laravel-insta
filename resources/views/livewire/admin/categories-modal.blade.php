@@ -1,4 +1,4 @@
-{{-- <div wire:ignore.self class="modal fade" id="editCategoryModal" tabindex="-1">
+{{-- <div class="modal fade" id="editCategoryModal-{{ $categoryId }}" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content border-warning">
             <div class="modal-header border-warning">
@@ -9,7 +9,7 @@
             </div>
 
             <div class="modal-body">
-                <input type="text" wire:model.defer="name" class="form-control">
+                <input type="text" wire:model="name" class="form-control" value="">
                 @error('name')
                     <div class="text-danger small mt-1">{{ $message }}</div>
                 @enderror

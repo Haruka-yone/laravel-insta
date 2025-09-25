@@ -14,9 +14,9 @@
                         <div class="row align-items-center mt-3">
                             <div class="col-auto">
                                 @if ($following->following->avatar)
-                                    <img src="{{ $following->following->avatar }}" alt="{{ $following->following->name }}" class="rounded-circle mx-auto avatar-sm">
+                                    <img src="{{ $following->following->avatar }}" alt="{{ $following->following->name }}" class="rounded-circle mx-auto avatar-md">
                                 @else
-                                    <i class="fa-solid fa-circle-user text-secondary d-block text-center icon-sm"></i>
+                                    <i class="fa-solid fa-circle-user text-secondary d-block text-center icon-md"></i>
                                 @endif
                             </div>
                             <div class="col ps-0">

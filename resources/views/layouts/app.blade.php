@@ -204,24 +204,7 @@
             }
         });
     </script>
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // カテゴリ編集モーダルの制御
-            window.addEventListener('show-edit-modal', () => {
-                const modal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
-                modal.show();
-            });
-
-            window.addEventListener('hide-edit-modal', () => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
-                if (modal) {
-                    modal.hide();
-                }
-            });
-        });
-    </script> --}}
-
+    
     @stack('scripts')
     @livewireScripts
 </body>

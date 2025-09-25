@@ -45,16 +45,33 @@ class CategoriesController extends Controller
         return redirect()->back();
     }
 
+    // public function update(Request $request, $id){
+    //     $request->validate([
+    //         'name'  =>  'required|max:50'
+    //     ]);
+
+    //     $category = $this->category->findOrFail($id);
+    //     $category->name = $request->name;
+    //     $category->save();
+
+    //     return redirect()->back();
+    // }
+
     public function update(Request $request, $id){
         $request->validate([
-            'name'  =>  'required|max:50'
+            'name'  =>  'required|string|max:50'
         ]);
 
         $category = $this->category->findOrFail($id);
         $category->name = $request->name;
         $category->save();
 
-        return redirect()->back();
+        return response()->json([
+            'success'     => true, 
+            'message'     => 'Category updated',
+            'name'        => $category->name,
+            'updated_at'  => $category->updated_at->toDateTimeString()
+        ]);
     }
 
     public function destroy($id){
