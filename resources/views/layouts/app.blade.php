@@ -30,7 +30,7 @@
 <body style="background-color:#f4f2f0">
     <div id="app">
         @if (!View::hasSection('hideNavbar'))
-            <nav class="navbar navbar-expand-lg shadow-sm"
+            <nav class="navbar navbar-expand-lg shadow-sm fixed-top"
                 style="background: linear-gradient(90deg, #6F6358, #B4AA9A);">
                 <div class="container">
                     <!-- Brand -->
@@ -160,7 +160,7 @@
             </nav>
         @endif
 
-        <main class="py-5">
+        <main class="mt-5 py-5">
             <div class="container">
                 <div class="row justify-content-center">
                     {{-- [SOON] Admin Controls --}}
@@ -204,7 +204,7 @@
             }
         });
     </script>
-    
+
     @stack('scripts')
     @livewireScripts
 </body>
