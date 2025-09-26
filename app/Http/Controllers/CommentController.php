@@ -37,6 +37,7 @@ class CommentController extends Controller
             'success' => true,
             'comment' => $this->comment->load('user'),
             'can_delete' => Auth::id() === $this->comment->user_id,
+            'delete_url' => route('comment.destroy', $this->comment->id)
         ]);
 
     }
