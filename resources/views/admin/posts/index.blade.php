@@ -92,11 +92,11 @@
                             </button>
                             <div class="dropdown-menu">
                                 @if ($post->trashed())
-                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#activate-user-{{ $post->user->id }}">
+                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#activate-user-{{ $post->id }}">
                                         <i class="fa-solid fa-eye"></i> Unhide post {{ $post->id }}
                                     </button>
                                 @else
-                                    <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deactivate-user-{{ $post->user->id }}">
+                                    <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deactivate-user-{{ $post->id }}">
                                         <i class="fa-solid fa-eye-slash"></i> Hide post {{ $post->id }}
                                     </button>
                                 @endif  
