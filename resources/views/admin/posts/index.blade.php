@@ -38,8 +38,8 @@
                     <td>{{ $post->id }}</td>
                     <td>
                         @if ($post->images->count() > 1)
-                            <div id="carousel-{{ $post->id }}" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner square-carousel">
+                            <div id="carousel-{{ $post->id }}" class="carousel slide square-carousel" data-bs-ride="carousel">
+                                <div class="carousel-inner">
                                     @foreach ($post->images as $index => $image)
                                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                             <img src="{{ $image->image }}" class="d-block mx-auto square-img" alt="{{ $post->description }}">
@@ -56,7 +56,9 @@
                                 </button>
                             </div>
                         @elseif($post->images->count() === 1)
-                            <img src="{{ $post->images->first()->image }}" alt="{{ $post->description }}" class="mx-auto avatar-lg">
+                            <div class="square-carousel">
+                                <img src="{{ $post->images->first()->image }}" alt="{{ $post->description }}" class="mx-auto avatar-lg">
+                            </div>
                         @endif
                     </td>
                     <td>
