@@ -11,7 +11,11 @@
                 <div class="modal-body">
                     <p>Are you sure you want to unhide this post?</p>
                     <div class="mt-3">
-                        <img src="{{ $post->image }}" alt="post id {{ $post->id }}" class="image-lg">
+                        @if($post->images && $post->images->count() > 0)
+                            <img src="{{ $post->images->first()->image }}" 
+                                 alt="Post {{ $post->id }}" 
+                                 class="image-lg rounded">
+                        @endif
                         <p class="mt-1 text-muted">{{ $post->description }}</p>
                     </div>
                 </div>
@@ -40,7 +44,11 @@
                 <div class="modal-body">
                     <p>Are you sure you want to hide this post?</p>
                     <div class="mt-3">
-                        <img src="{{ $post->image }}" alt="post id {{ $post->id }}" class="image-lg">
+                        @if($post->images && $post->images->count() > 0)
+                            <img src="{{ $post->images->first()->image }}" 
+                                 alt="Post {{ $post->id }}" 
+                                 class="image-lg rounded">
+                        @endif
                         <p class="mt-1 text-muted">{{ $post->description }}</p>
                     </div>
                 </div>
