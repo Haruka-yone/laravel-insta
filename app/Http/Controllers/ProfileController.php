@@ -29,7 +29,7 @@ class ProfileController extends Controller
         $request->validate([
             'name'         => 'required|max:50',
             'email'        => 'required|max:50',
-            'intoduction'  => 'max:100',
+            'introduction'  => 'max:100',
             'avatar'       => 'mimes:jpg,jpeg,png,gif|max:1048',
             'current_password' => 'nullable|required_with:password|string',
             'password'      => 'nullable|min:8|confirmed'
